@@ -342,7 +342,10 @@ declare -p ews &> /dev/null && {
         pncIn1="${3}"
         pncIn2="${2}"
         pncNeg='neg' || :
-      } || [ "${pncOut[pos]}" ] || return
+      } || [ "${pncOut[pos]}" ] || {
+        pncOut[res]=0
+        return
+      }
     }
     while [ "${pncIn1}""${pncIn2}" ]; do
       pncIdx="${pncIn1: -1}"
@@ -545,7 +548,7 @@ declare -p ews &> /dev/null && {
     exit 1
   }
 } || {
-  echo 'Pnic u0r0 by Brendon, 05/26/2022.
+  echo 'Pnic u0r1 by Brendon, 06/10/2022.
 ——String-Based Math Library. https://ed7n.github.io/pnic
 
 `ews` not set.'

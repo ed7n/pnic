@@ -1,0 +1,10 @@
+Pnic: Changes
+
+—Update 0
+
+——Revision 1, 06/10/2022.
+- Fixed empty result for subtractions to zero.
+- Fixed variable reference in KESIMATE's `trim`.
+
+——Revision 0, 05/26/2022.
+- Initial release.

@@ -1,6 +1,6 @@
 #!/bin/env bash
 
-# KESIMATE u0r0 by Brendon, 05/26/2022.
+# KESIMATE u0r1 by Brendon, 06/10/2022.
 # ——Pocket calculator simulator. https://ed7n.github.io/pnic/kesimate
 #
 # It covers my collection of contemporary pocket calculators as much as humanly
@@ -477,7 +477,7 @@ trm() {
     ksmObj[err]='Overflow.'
     ksmObj[flt]="${ksmObj[int]:${ksmDif[int]}:${ksmLen[int]}}"
     ksmObj[int]="${ksmObj[int]:0:${ksmDif[int]}}" || :
-  } || ksmObj[flt]="${ksmObj[flt]:0:ksmDif[int]}"
+  } || ksmObj[flt]="${ksmObj[flt]:0:${ksmDif[int]}}"
   PNC.trmFlt ksmObj[flt]
 }
 
