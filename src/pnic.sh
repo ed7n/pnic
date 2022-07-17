@@ -1,6 +1,10 @@
 #!/bin/env bash
 
 declare -p ews &> /dev/null && {
+  # Division setup:
+  #   Alg=pcs   Algorithm: `pcs` | `pdv`.
+  #   Pcs=20    Precision or significant figures.
+  declare pncDivAlg=pcs pncDivPcs=20
   declare -ar PNC_TBL_ADD00=(00 01 02 03 04 05 06 07 08 09)
   declare -ar PNC_TBL_ADD01=(01 02 03 04 05 06 07 08 09 10)
   declare -ar PNC_TBL_ADD02=(02 03 04 05 06 07 08 09 10 11)
@@ -112,6 +116,7 @@ declare -p ews &> /dev/null && {
     [ "${3}""${5}" ] && {
       [ "${1}" == 'pncOut' ] || local -n pncOut="${1}"
       local pncFl1="${3}" pncFl2="${5}" pncIn1="${2}" pncIn2="${4}" pncLen
+      PNC.trmFlt pncFl1 pncFl2
       PNC.alnFlt pncFl1 pncFl2
       PNC.trmInt pncIn1 pncIn2
       PNC.clrObj "${1}"
@@ -145,6 +150,7 @@ declare -p ews &> /dev/null && {
     [ "${3}""${5}" ] && {
       [ "${1}" == 'pncOut' ] || local -n pncOut="${1}"
       local pncFl1="${3}" pncFl2="${5}" pncIn1="${2}" pncIn2="${4}"
+      PNC.trmFlt pncFl1 pncFl2
       PNC.alnFlt pncFl1 pncFl2
       PNC.trmInt pncIn1 pncIn2
       PNC.clrObj "${1}"
@@ -169,6 +175,7 @@ declare -p ews &> /dev/null && {
     [ "${3}""${5}" ] && {
       [ "${1}" == 'pncOut' ] || local -n pncOut="${1}"
       local pncFl1="${3}" pncFl2="${5}" pncIn1="${2}" pncIn2="${4}"
+      PNC.trmFlt pncFl1 pncFl2
       PNC.alnFlt pncFl1 pncFl2
       PNC.trmInt pncIn1 pncIn2
       PNC.clrObj "${1}"
@@ -215,9 +222,7 @@ declare -p ews &> /dev/null && {
 
   PNC.shlObj() {
     [ "${1}" == 'pncObj' ] || local -n pncObj="${1}"
-    [ "${2}" ] || {
-      [ "${2}" == '0' ] && return
-    }
+    [ "${2}" == '0' ] || [ ! "${2}" ] && return
     [ "${2:0:1}" == '-' ] && {
       PNC.shrObj "${1}" "${2:1}" || :
     } || {
@@ -234,9 +239,7 @@ declare -p ews &> /dev/null && {
 
   PNC.shrObj() {
     [ "${1}" == 'pncObj' ] || local -n pncObj="${1}"
-    [ "${2}" ] || {
-      [ "${2}" == '0' ] && return
-    }
+    [ "${2}" == '0' ] || [ ! "${2}" ] && return
     [ "${2:0:1}" == '-' ] && {
       PNC.shlObj "${1}" "${2:1}" || :
     } || {
@@ -257,7 +260,6 @@ declare -p ews &> /dev/null && {
     until [ "${#}" == '0' ]; do
       [ "${1}" == 'pncFl1' ] || local -n pncFl1="${1}"
       [ "${2}" == 'pncFl2' ] || local -n pncFl2="${2}"
-      PNC.trmFlt pncFl1 pncFl2
       pncStr="${pncFl1:${#pncFl2}}"
       [ "${pncStr}" ] && {
         pncFl2="${pncFl2}""${pncStr//?/0}" || :
@@ -380,6 +382,7 @@ declare -p ews &> /dev/null && {
     [ "${4}""${6}" ] && {
       [ "${1}" == 'pncOut' ] || local -n pncOut="${1}"
       local pncFl1="${4}" pncFl2="${6}" pncIn1="${3}" pncIn2="${5}" pncLen
+      PNC.trmFlt pncFl1 pncFl2
       PNC.alnFlt pncFl1 pncFl2
       PNC.trmInt pncIn1 pncIn2
       PNC.clrObj "${1}"
@@ -443,6 +446,53 @@ declare -p ews &> /dev/null && {
   }
 
   PNC._div() {
+    PNC._div_"${pncDivAlg:-pcs}" "${@}"
+  }
+
+  PNC._div_pcs() {
+    local pncDgt=0 pncFlt='' pncIn1="${1}" pncIn2="${2}" pncInt pncItr=0 \
+        pncNeg pncPos pncSld pncZro
+    PNC.trmInt pncIn1 pncIn2
+    [ "${pncIn2}" == '0' ] && {
+      pncOut[err]='Division by zero.' || :
+    } || {
+      PNC._addsub 'SUB' "${#pncIn1}" "${#pncIn2}"
+      [ "${pncOut[pos]}" ] && {
+        pncSld="${pncOut[res]}"
+        PNC.alnFlt pncIn1 pncIn2
+      }
+      while true; do
+        PNC._addsub 'SUB' "${pncIn1}" "${pncIn2}"
+        pncNeg="${pncOut[neg]}"
+        pncPos="${pncOut[pos]}"
+        [ "${pncNeg}" ] || {
+          pncIn1="${pncOut[res]}"
+          PNC.trmInt pncIn1
+          PNC._addsub 'ADD' "${pncDgt}" 1
+          pncDgt="${pncOut[res]}"
+        }
+        [ "${pncPos}" ] || {
+          [ "${pncInt}" ] && {
+            pncFlt="${pncFlt}""${pncDgt}" || :
+          } || pncInt="${pncDgt}"
+          [ "${pncItr}" == "${pncDivPcs:-20}" ] && break
+          pncDgt=0
+          pncIn1="${pncIn1}"'0'
+          PNC._addsub 'ADD' "${pncItr}" 1
+          pncItr="${pncOut[res]}"
+        }
+        [ "${pncNeg}""${pncPos}" ] || break
+      done
+      pncOut[flt]="${pncFlt}"
+      pncOut[int]="${pncInt}"
+      pncOut[neg]=''
+      pncOut[pos]='pos'
+      pncOut[res]="${pncInt}""${pncFlt}"
+      PNC.shlObj pncOut "${pncSld}"
+    }
+  }
+
+  PNC._div_pdv() {
     local pncDvs pncIn1="${1}" pncIn2="${2}" pncLen pncLn1 pncPos pncRes='' \
         pncRs1 pncZro="${PNC_PZR}"
     PNC.trmInt pncIn1 pncIn2
@@ -455,7 +505,7 @@ declare -p ews &> /dev/null && {
           pncIn1="${pncIn1:0:-1}" || :
         } || {
           pncIn1=0
-          break;
+          break
         }
         pncDvs="${pncDvs:1}"
       done
@@ -548,7 +598,7 @@ declare -p ews &> /dev/null && {
     exit 1
   }
 } || {
-  echo 'Pnic u0r1 by Brendon, 06/10/2022.
+  echo 'Pnic u0r2 by Brendon, 07/17/2022.
 ——String-Based Math Library. https://ed7n.github.io/pnic
 
 `ews` not set.'

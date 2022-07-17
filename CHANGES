@@ -2,6 +2,12 @@ Pnic: Changes
 
 —Update 0
 
+——Revision 2, 07/17/2022.
+- Pad, Count, Shift division algorithm `PNC._div_pcs`.
+-- [https://ed7n.github.io/pages/news/20220717]
+- Fixed zero or empty distances in left and right shifts.
+- `pnc.alnFlt` no longer trims prior to alignment.
+
 ——Revision 1, 06/10/2022.
 - Fixed empty result for subtractions to zero.
 - Fixed variable reference in KESIMATE's `trim`.

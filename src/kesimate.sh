@@ -1,6 +1,6 @@
 #!/bin/env bash
 
-# KESIMATE u0r1 by Brendon, 06/10/2022.
+# KESIMATE u0r2 by Brendon, 07/17/2022.
 # ——Pocket calculator simulator. https://ed7n.github.io/pnic/kesimate
 #
 # It covers my collection of contemporary pocket calculators as much as humanly
@@ -13,6 +13,11 @@
 } &> /dev/null
 . "${ews[base]}"/pnic.sh
 
+# Pnic division setup:
+#   Alg=pcs   Algorithm: `pcs` | `pdv`.
+#   Pcs=20    Precision or significant figures.
+pncDivAlg=pcs
+pncDivPcs=12
 # Key assignments:
 #   add   Add.
 #   clr   Clear Entry/All.
