@@ -2,7 +2,8 @@
 
 {
   declare -p ews || declare -Ax ews=([base]="${0%/*}" [exec]="${0}" \
-      [name]='Pnic-test')
+      [name]='Pnic-test' [sign]='u0r0 by Brendon, 05/26/2022.' \
+      [desc]='Pnic Tester. https://ed7n.github.io/pnic')
 } &> /dev/null
 . "${ews[base]}"/pnic.sh
 
@@ -90,9 +91,7 @@ shopt -q 'extglob' || shopt -qs 'extglob' || {
   ews[dbug]='dbug'
 }
 
-  echo 'Pnic-test u0r0 by Brendon, 05/26/2022.
-——Pnic Tester. https://ed7n.github.io/pnic
-'
+echo -e "${ews[name]}"' '"${ews[sign]}"'\n——'"${ews[desc]}"'\n'
 echo -n 'addInt: '
 addInt "${1:-0}" "${2:-0}"
 echo -n 'addFlt: '

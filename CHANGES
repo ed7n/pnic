@@ -2,6 +2,10 @@ Pnic: Changes
 
 —Update 0
 
+——Revision 3, 07/25/2022.
+- Fixed trivial result for subtractions to zero.
+- Removed `ews` requirement.
+
 ——Revision 2, 07/17/2022.
 - Pad, Count, Shift division algorithm `PNC._div_pcs`.
 -- [https://ed7n.github.io/pages/news/20220717]
