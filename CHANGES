@@ -2,6 +2,12 @@ Pnic: Changes
 
 —Update 0
 
+——Revision 4, 08/23/2022.
+- `eval`
+- Fixed divisions of zero with the `pcs` algorithm.
+- Fixed `cmp` leftover magnitude.
+- Fixed `cpy` name collision.
+
 ——Revision 3, 07/25/2022.
 - Fixed trivial result for subtractions to zero.
 - Removed `ews` requirement.

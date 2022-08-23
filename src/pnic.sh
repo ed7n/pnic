@@ -1,6 +1,6 @@
 #!/bin/env bash
 
-# Pnic u0r3 by Brendon, 07/25/2022.
+# Pnic u0r4 by Brendon, 08/23/2022.
 # ——String-based math library. https://ed7n.github.io/pnic
 
 # Division setup:
@@ -193,12 +193,14 @@ PNC.cmpObj() {
   [ "${3}" == 'pncOb2' ] || local -n pncOb2="${3}"
   [ "${pncOb1[neg]}" ] && {
     [ "${pncOb2[neg]}" ] || {
+      PNC.clrObj "${1}"
       pncOut[neg]='neg'
       pncOut[pos]=''
       return
     }
   } || {
     [ "${pncOb2[neg]}" ] && {
+      PNC.clrObj "${1}"
       pncOut[neg]=''
       pncOut[pos]='pos'
       return
@@ -206,12 +208,14 @@ PNC.cmpObj() {
   }
   [ "${pncOb1[pos]}" ] && {
     [ "${pncOb2[pos]}" ] || {
+      PNC.clrObj "${1}"
       pncOut[neg]=''
       pncOut[pos]='pos'
       return
     }
   } || {
     [ "${pncOb2[pos]}" ] && {
+      PNC.clrObj "${1}"
       pncOut[neg]='pos'
       pncOut[pos]=''
       return
@@ -292,7 +296,7 @@ PNC.clrObj() {
 }
 
 PNC.cpyObj() {
-  local -n pncOb1="${!#}"
+  [ "${!#}" == 'pncOb1' ] || local -n pncOb1="${!#}"
   until [ "${#}" == '1' ]; do
     [ "${1}" == 'pncOb2' ] || local -n pncOb2="${1}"
     pncOb2[err]="${pncOb1[err]}"
@@ -337,6 +341,56 @@ PNC.trmObj() {
     [ "${1}" == 'pncObj' ] || unset -n pncObj
     shift
   done
+}
+
+PNC.eval() {
+  local -A pncEol pncEor pncEou
+  local pncEop=''
+  until [ "${#}" == '0' ]; do
+    case "${1}" in
+      '*' | 'mul' )
+        pncEop='mul' ;;
+      '+' | 'add' )
+        pncEop='add' ;;
+      '-' | 'sub' )
+        pncEop='sub' ;;
+      '/' | 'div' )
+        pncEop='div' ;;
+      '<<' | 'shl' )
+        pncEop='shl' ;;
+      '<>' | 'cmp' )
+        pncEop='cmp' ;;
+      '>>' | 'shr' )
+        pncEop='shr' ;;
+      * )
+        pncEor[flt]="${1##*.}"
+        pncEor[int]="${1%%.*}"
+        [ "${pncEor[flt]}" == "${1}" ] && pncEor[flt]=''
+        [[ "${pncEor[flt]}""${pncEor[int]}" == +(0) ]] || pncEor[pos]='pos'
+        case "${pncEop}" in
+          'add' | 'cmp' | 'div' | 'mul' | 'sub' )
+            PNC."${pncEop}"'Obj' pncEol pncEou pncEor ;;
+          'shl' | 'shr' )
+            PNC."${pncEop}"'Obj' pncEol "${pncEor[int]}" ;;
+          * )
+            PNC.cpyObj pncEol pncEor ;;
+        esac
+        PNC.cpyObj pncEou pncEol
+        [ "${pncEou[err]}" ] && break
+        PNC.clrObj pncEor ;;
+    esac
+    shift
+  done
+  [ "${pncEou[err]}" ] && {
+    echo "${pncEou[err]}"
+    return 1
+  } || {
+    [ "${pncEou[neg]}" ] && echo -n '-'
+    [ "${pncEou[pos]}" ] && echo -n '+'
+    echo -n "${pncEou[int]}"
+    [ "${pncEou[flt]}" ] && echo -n '.'"${pncEou[flt]}"
+    echo
+  }
 }
 
 PNC._addsub() {
@@ -462,6 +516,7 @@ PNC._div_pcs() {
   [ "${pncIn2}" == '0' ] && {
     pncOut[err]='Division by zero.' || :
   } || {
+    [ "${pncIn1}" == '0' ] && return
     PNC._addsub 'SUB' "${#pncIn1}" "${#pncIn2}"
     [ "${pncOut[pos]}" ] && {
       pncSld="${pncOut[res]}"
