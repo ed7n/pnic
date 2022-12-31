@@ -2,11 +2,18 @@ Pnic: Changes
 
 —Update 0
 
+——Revision 5, 12/31/2022.
+- `PNC.tstObj`
+- Refactored all.
+- Fixed KESIMATE's sign change behavior.
+- Fixed large shifts.
+- Fixed output typo in tester.
+
 ——Revision 4, 08/23/2022.
-- `eval`
+- `PNC.eval`
 - Fixed divisions of zero with the `pcs` algorithm.
-- Fixed `cmp` leftover magnitude.
-- Fixed `cpy` name collision.
+- Fixed `PNC.cmp` leftover magnitude.
+- Fixed `PNC.cpy` name collision.
 
 ——Revision 3, 07/25/2022.
 - Fixed trivial result for subtractions to zero.
@@ -16,11 +23,11 @@ Pnic: Changes
 - Pad, Count, Shift division algorithm `PNC._div_pcs`.
 -- [https://ed7n.github.io/pages/news/20220717]
 - Fixed zero or empty distances in left and right shifts.
-- `pnc.alnFlt` no longer trims prior to alignment.
+- `PNC.alnFlt` no longer trims prior to alignment.
 
 ——Revision 1, 06/10/2022.
 - Fixed empty result for subtractions to zero.
-- Fixed variable reference in KESIMATE's `trim`.
+- Fixed variable reference in `KSM.trim`.
 
 ——Revision 0, 05/26/2022.
 - Initial release.
