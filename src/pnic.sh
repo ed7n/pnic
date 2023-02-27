@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Pnic u0r5 by Brendon, 12/31/2022.
+# Pnic u0r6 by Brendon, 02/27/2023.
 # ——String-based math library. https://ed7n.github.io/pnic
 
 # Division setup:
@@ -622,7 +622,7 @@ PNC._muldivObj() {
   PNC."${2}"Flt "${1}" "${pncOb1[int]}" "${pncOb1[flt]}" "${pncOb2[int]}" \
       "${pncOb2[flt]}"
   (( ${#pncOut[pos]} )) && {
-    (( ${#pncOb1[neg]} && ${#pncOb2[neg]} )) && {
+    (( ${#pncOb1[neg]} ^ ${#pncOb2[neg]} )) && {
       pncOut[neg]='neg'
       pncOut[pos]=
     }

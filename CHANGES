@@ -2,6 +2,9 @@ Pnic: Changes
 
 —Update 0
 
+——Revision 6, 02/27/2023.
+- Fixed divisions and multiplications with negative numbers.
+
 ——Revision 5, 12/31/2022.
 - `PNC.tstObj`
 - Refactored all.
