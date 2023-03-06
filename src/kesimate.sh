@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# KESIMATE u0r5 by Brendon, 12/31/2022.
+# KESIMATE u0r7 by Brendon, 03/06/2023.
 # ——Pocket calculator simulator. https://ed7n.github.io/pnic/kesimate
 #
 # It covers my collection of contemporary pocket calculators as much as humanly
@@ -423,7 +423,7 @@ KSM.res() {
 
 # Based on Heron's method.
 KSM.rt2() {
-  local -A ksmAc1 ksmAc2 ksmLen ksmOut
+  local -A ksmAc1 ksmAc2 ksmAcA ksmAcB ksmLen ksmOut
   local ksmItr="${KSM_RT2S[max]}"
   KSM.dly
   PNC.cpyObj ksmInp "${ksmDis[key]}"
@@ -439,9 +439,12 @@ KSM.rt2() {
     PNC.addObj ksmAc2 ksmOut ksmAc1
     PNC.mulObj ksmOut ksmAc2 KSM_HLF
     KSM.trm ksmOut "${KSM_RT2S[pcs]}"
-    [ "${ksmOut[int]}""${ksmOut[flt]}" \
-        == "${ksmAc1[int]}""${ksmAc1[flt]}" ] && break
+    PNC.cpyObj ksmAcA ksmOut
+    KSM.trm ksmAcA "${KSM_SPCS[len]}"
+    [ "${ksmAcA[int]}""${ksmAcA[flt]}" \
+        == "${ksmAcB[int]}""${ksmAcB[flt]}" ] && break
     PNC.cpyObj ksmAc1 ksmOut
+    PNC.cpyObj ksmAcB ksmAcA
   done
   PNC.cpyObj ksmInp ksmOut
   (( ${#KSM_RT2S[rnd]} )) && [[ "${ksmOut[flt]}" == +(9) ]] && {

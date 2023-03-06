@@ -2,6 +2,10 @@ Pnic: Changes
 
 —Update 0
 
+——Revision 7, 03/06/2023.
+- In KESIMATE, compare root iteration results to the display length instead of
+  the internal precision.
+
 ——Revision 6, 02/27/2023.
 - Fixed divisions and multiplications with negative numbers.
 
