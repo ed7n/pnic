@@ -367,8 +367,8 @@ KSM.k2i() {
     "${KSM_KEYS[sub]}" )
       ksmKey='-' ;;
     'v' )
-      (( ${#ksmDbug} )) && declare -p ksmDis ksmInp ksmCon ksmMem ksmRes \
-          ksmDec ksmErr ksmFlu ksmIen ksmIns ksmNul ksmOpr ;;
+      (( ${#ksmDbug} )) && echo && declare -p ksmDis ksmInp ksmCon ksmMem \
+          ksmRes ksmDec ksmErr ksmFlu ksmIen ksmIns ksmNul ksmOpr ;;
     * )
       ksmKey= ;;
   esac

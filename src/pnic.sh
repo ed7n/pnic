@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Pnic u0r6 by Brendon, 02/27/2023.
+# Pnic u0r8 by Brendon, 05/05/2023.
 # ——String-based math library. https://ed7n.github.io/pnic
 
 # Division setup:
@@ -346,9 +346,9 @@ PNC.trmObj() {
 PNC.tstObj() {
   while (( ${#} )); do
     [ "${1}" == 'pncObj' ] || local -n pncObj="${1}"
-    (( ${#pncObj[err]} )) && (( ${#pncObj[flt]} )) && (( ${#pncObj[int]} )) \
-        && (( ${#pncObj[neg]} )) && (( ${#pncObj[pos]} )) \
-        && (( ${#pncObj[res]} )) && return 1
+    (( ${#pncObj[err]} )) || (( ${#pncObj[flt]} )) || (( ${#pncObj[int]} )) \
+        || (( ${#pncObj[neg]} )) || (( ${#pncObj[pos]} )) \
+        || (( ${#pncObj[res]} )) || return 1
     [ "${1}" == 'pncObj' ] || unset -n pncObj
     shift
   done || :
