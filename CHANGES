@@ -2,6 +2,9 @@ Pnic: Changes
 
 —Update 0
 
+——Revision 9, 07/21/2023.
+- Fixed `PNC.cpyObj` with read-only source objects.
+
 ——Revision 8, 05/05/2023.
 - Fixed `PNC.tstObj` logic operator.
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Pnic u0r8 by Brendon, 05/05/2023.
+# Pnic u0r9 by Brendon, 07/21/2023.
 # ——String-based math library. https://ed7n.github.io/pnic
 
 # Division setup:
@@ -296,7 +296,7 @@ PNC.clrObj() {
 
 PNC.cpyObj() {
   [ "${!#}" == 'pncOb1' ] || local -n pncOb1="${!#}"
-  while (( ${#} )); do
+  while (( ${#} > 1 )); do
     [ "${1}" == 'pncOb2' ] || local -n pncOb2="${1}"
     pncOb2[err]="${pncOb1[err]}"
     pncOb2[flt]="${pncOb1[flt]}"
