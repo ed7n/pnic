@@ -2,6 +2,9 @@ Pnic: Changes
 
 —Update 0
 
+——Revision A, 07/30/2023.
+- Fixed setting of result polarity in additions and subtractions with carries.
+
 ——Revision 9, 07/21/2023.
 - Fixed `PNC.cpyObj` with read-only source objects.
 

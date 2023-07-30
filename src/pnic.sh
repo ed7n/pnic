@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Pnic u0r9 by Brendon, 07/21/2023.
+# Pnic u0rA by Brendon, 07/30/2023.
 # ——String-based math library. https://ed7n.github.io/pnic
 
 # Division setup:
@@ -427,7 +427,8 @@ PNC._addsub() {
     pncCry="${pncVal:0:1}"
     pncDgt="${pncVal:1:1}"
     pncRes="${pncDgt}""${pncRes}"
-    (( ${#pncNeg} || ${#pncPos} )) || [ "${pncDgt}" == '0' ] || pncPos='pos'
+    # Non-zero results are positive by default.
+    (( ${#pncNeg} || ${#pncPos} )) || [ "${pncVal}" == '00' ] || pncPos='pos'
     (( ${#pncIn1} )) && pncIn1="${pncIn1:0:-1}"
     (( ${#pncIn2} )) && pncIn2="${pncIn2:0:-1}"
   done
